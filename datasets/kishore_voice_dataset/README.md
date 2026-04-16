@@ -39,17 +39,26 @@ This is only a first-pass curation snapshot. It is not yet a guaranteed clean si
   - duet contamination
   - aggressive denoising or phase artifacts
 
-## Remaining Work Before Training
+## ACE-Step Status
 
-For RVC-style or ACE-Step LoRA-style singer work, this dataset still needs:
+This repo now includes an ACE-Step-compatible packaged dataset in:
+
+- `ace_step_data/`
+- `ace_step_manifest.tsv`
+
+That package is launch-ready for prompt-only ACE-Step LoRA experiments. Lyrics placeholders are present for every sample, which satisfies the ACE-Step file contract, but they are not verified lyric transcripts.
+
+## Remaining Work Before Higher-Quality Training
+
+For better singer adaptation quality, this dataset still needs:
 
 1. manual listening review of all `keep` files
 2. likely trimming into shorter clean solo segments
 3. removal of chorus and bleed-heavy regions
-4. normalized naming
-5. lyrics metadata if training ACE-Step lyric-conditioned LoRA
-6. prompt/tag metadata if training ACE-Step
+4. verified lyrics if running lyric-conditioned LoRA
+5. stronger prompt refinement if style control matters
 
-## Recommended Next Step
+## Recommended Use
 
-Treat `audio_keep/` as the review queue for manual segmentation, not as final training-ready audio.
+- use `ace_step_data/` for the first RunPod ACE-Step LoRA pass
+- treat `audio_keep/` as the source pool for later manual cleanup

@@ -7,13 +7,19 @@ from pathlib import Path
 
 
 BASE_TAGS = [
+    "kishore kumar",
+    "kishore kumar voice",
+    "kishore kumar style",
+    "classic bollywood",
     "old bollywood",
+    "bollywood playback singer",
     "hindi film song",
+    "indian male singer",
     "male vocal",
     "solo vocal",
     "playback singing",
     "vintage",
-    "kishore kumar style",
+    "retro hindi",
 ]
 
 KEYWORD_TAGS = [
@@ -21,6 +27,9 @@ KEYWORD_TAGS = [
     (re.compile(r"romantic|pal pal|dil|pyaar|o hansini|tere chehre", re.I), ["romantic", "expressive"]),
     (re.compile(r"mastani|rang|ghungroo|deewana|jaadu", re.I), ["energetic", "lively"]),
     (re.compile(r"naina|rimjhim|saawan|shaam|khwab", re.I), ["melodic", "nostalgic"]),
+    (re.compile(r"chain|pal pal|mehboob|pyar|pyaar|hansini|jaadu|dilbar", re.I), ["romantic bollywood"]),
+    (re.compile(r"safar|naina|bheegi|sathi|chhote|toda", re.I), ["sad bollywood", "expressive male vocal"]),
+    (re.compile(r"saawan|rimjhim|shaam|khwab|ambar", re.I), ["melodic bollywood", "nostalgic hindi song"]),
 ]
 
 STOPWORDS = re.compile(
@@ -116,7 +125,7 @@ def main() -> None:
 
         ffmpeg_convert(wav, mp3_path)
         prompt_path.write_text(", ".join(tags) + "\n")
-        # Lyrics are intentionally left blank until manually verified.
+        # ACE-Step accepts optional lyrics files; keep placeholders until verified text is supplied.
         lyrics_path.write_text("")
 
         rows.append(
@@ -125,7 +134,7 @@ def main() -> None:
                 "source_file": wav.name,
                 "song_title_guess": title,
                 "prompt_tags": ", ".join(tags),
-                "lyrics_status": "missing",
+                "lyrics_status": "optional_missing",
                 "mp3_path": str(mp3_path.relative_to(manifest_path.parent.parent if manifest_path.parent.parent.exists() else Path("."))),
             }
         )

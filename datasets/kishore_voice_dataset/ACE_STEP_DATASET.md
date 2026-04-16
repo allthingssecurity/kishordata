@@ -1,38 +1,74 @@
-# ACE-Step Packaging
+# ACE-Step Dataset
 
-This repo includes a helper script to package the curated `audio_keep/` bucket into an ACE-Step-compatible `data/` directory.
+This repo contains a launch-ready ACE-Step LoRA dataset package built from the curated `audio_keep/` bucket.
 
-## Script
-
-Run:
-
-```bash
-python scripts/prepare_acestep_dataset.py
-```
-
-Default outputs:
-
-- `datasets/kishore_voice_dataset/ace_step_data/`
-- `datasets/kishore_voice_dataset/ace_step_manifest.tsv`
-
-## Output Format
-
-For each `keep` sample, the script creates:
+ACE-Step training expects exactly three files per sample:
 
 - `sample.mp3`
 - `sample_prompt.txt`
 - `sample_lyrics.txt`
 
-This matches the ACE-Step training doc requirement.
+Per the official `TRAIN_INSTRUCTION.md`, lyrics are optional but recommended. This dataset is therefore valid for prompt-only LoRA training even when lyric placeholders are empty.
 
-## Important Limitation
+## Files
 
-`*_lyrics.txt` files are intentionally created empty because verified lyrics are not available in this repo yet.
+- `ace_step_data/`: packaged MP3 + prompt + lyrics-placeholder triplets
+- `ace_step_manifest.tsv`: sample manifest and prompt metadata
+- `../audio_keep/`: original curated WAV source files
 
-That means this package is suitable for:
+## Build / Refresh
 
-- structural dataset preparation
-- RunPod handoff
-- later ACE-Step conversion once lyrics are filled
+From repo root:
 
-It is **not** a final lyric-conditioned ACE-Step training dataset until the lyrics files are populated and reviewed.
+```bash
+python scripts/prepare_acestep_dataset.py
+python scripts/validate_acestep_dataset.py
+```
+
+## Validation
+
+The validator checks:
+
+- every `.mp3` has matching `_prompt.txt` and `_lyrics.txt`
+- prompts are non-empty
+- manifest row count matches packaged samples
+- manifest sample IDs match packaged sample IDs
+
+Run:
+
+```bash
+python scripts/validate_acestep_dataset.py
+```
+
+## RunPod / ACE-Step Conversion
+
+After cloning this repo onto a GPU machine and cloning `ace-step/ACE-Step`, run:
+
+```bash
+bash scripts/runpod_prepare_for_acestep.sh /path/to/ACE-Step 2000
+```
+
+That will:
+
+1. validate the packaged dataset
+2. run `convert2hf_dataset.py`
+3. create `kishore_lora_dataset/` inside the ACE-Step checkout
+
+## Lyrics Status
+
+Current status:
+
+- prompt metadata: present for all samples
+- lyrics metadata: placeholder files present for all samples
+- verified lyrics: not included in this repo
+
+This means:
+
+- the dataset is launch-ready for ACE-Step prompt-only LoRA experiments
+- the dataset is not a verified lyric-aligned corpus yet
+
+## Recommendation
+
+Use this package for the first training pass.
+
+If the first LoRA shows promising singer-style adaptation, the next upgrade should be manual segmentation and manually sourced lyrics for the strongest subset of clips.
