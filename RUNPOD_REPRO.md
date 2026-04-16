@@ -1,6 +1,14 @@
 # RunPod Repro
 
-This repo now contains the minimum pieces needed to reproduce the Kishore ACE-Step experiment without depending on an ad hoc pod shell history.
+This repo now contains the pieces needed to reproduce the Kishore ACE-Step experiment without depending on ad hoc pod shell history.
+
+If you want the shortest path, use:
+
+```bash
+scripts/runpod_kishore_workflow.sh prepare
+scripts/runpod_kishore_workflow.sh train
+scripts/runpod_kishore_workflow.sh status
+```
 
 ## What Is Here
 
@@ -18,6 +26,8 @@ This repo now contains the minimum pieces needed to reproduce the Kishore ACE-St
   - applies the patch and starts training
 - `scripts/infer_acestep_sample.py`
   - generates a sample from any saved LoRA checkpoint
+- `scripts/runpod_kishore_workflow.sh`
+  - single entrypoint with `prepare`, `train`, `infer`, `status`
 
 ## Why The Patch Exists
 
@@ -103,6 +113,12 @@ export KEEP_LAST=2
 tail -f /runpod-volume/ace_logs/train_resume.out
 ```
 
+or
+
+```bash
+bash scripts/runpod_kishore_workflow.sh status
+```
+
 Saved checkpoints appear under:
 
 ```bash
@@ -134,6 +150,14 @@ PYTHONPATH=/runpod-volume/work/ACE-Step python3 /runpod-volume/work/kishordata/s
   --use-erg-tag \
   --use-erg-lyric \
   --use-erg-diffusion
+```
+
+Equivalent workflow wrapper:
+
+```bash
+bash scripts/runpod_kishore_workflow.sh infer \
+  /runpod-volume/ace_logs/lightning_logs/<run_dir>/checkpoints/epoch=0-step=500_lora \
+  /runpod-volume/ace_logs/samples/step1000_kishore_english.wav
 ```
 
 ## 7. Push To Hugging Face
