@@ -1,1 +1,2 @@
 datasets/kishore_voice_dataset/**/*.wav filter=lfs diff=lfs merge=lfs -text
+datasets/kishore_voice_dataset/ace_step_data/*.mp3 filter=lfs diff=lfs merge=lfs -text
