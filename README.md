@@ -7,6 +7,7 @@ This repo is structured so an agent can pick it up and run the workflow without 
 Read:
 
 - [RUNPOD_REPRO.md](./RUNPOD_REPRO.md)
+- [DATA_CURATION.md](./DATA_CURATION.md)
 
 Use:
 
@@ -31,6 +32,8 @@ Use:
   - generate a sample from any saved LoRA
 - `scripts/runpod_kishore_workflow.sh`
   - one command entrypoint for `prepare`, `train`, `infer`, `status`
+- `DATA_CURATION.md`
+  - rules for building a cleaner `v2` singer dataset
 
 ## Agent-Friendly Rule
 

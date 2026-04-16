@@ -58,6 +58,10 @@ For better singer adaptation quality, this dataset still needs:
 4. verified lyrics if running lyric-conditioned LoRA
 5. stronger prompt refinement if style control matters
 
+Detailed curation rules now live in:
+
+- `../../DATA_CURATION.md`
+
 ## Recommended Use
 
 - use `ace_step_data/` for the first RunPod ACE-Step LoRA pass
